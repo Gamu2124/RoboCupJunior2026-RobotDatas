@@ -18,15 +18,15 @@ We open-source our complete robot design to support the global RCJ community and
 # 大会実績 / Competition Results
 
 * **RoboCupJunior Japan Open 2026**
-* 
+  
   * **競技 1位** / 1st Place in Japan Open
-  * 
+   
 * **RoboCup World Championship 2026 (Incheon, Republic of Korea)**
-* 
+  
   * **競技 優勝** / Individual World Champion (1st Place)
-  * 
+    
   * **総合 優勝** / Overall World Champion (1st Place)
-  * 
+    
   * **コミュニティ アワード** / Community Award
 
 ---
@@ -86,15 +86,15 @@ AIRのハードウェア構成は、ジャパンオープンから世界大会�
 
 * **アルゴリズム**
   * **Ball Tracking**: 24個のTSSP58038から得られるデジタル&パルスの入力パターンをRP2350Aで高速処理し、死角のない最確方位と距離を即座に算出。
-  * 
+    
   * **Line Keep**: 40個の表面実装フォトトランジスタ（B19H1LS）とLM393コンパレータを採用。PWM入力＋RCフィルターによる動的閾値調整とワイヤードOR回路の併用で、ライン進入時の超高速レスポンスを実現。
-  * 
+    
   * **Wall Distance**: ESP32-S3のFreeRTOS（デュアルコアタスク）を活用し、`pulseIn` 関数によるマイコンブロッキングを排除。バックグラウンドで壁面距離を高周波サンプリング。
-  * 
+    
   * **Motion Control**: IMU (BNO055) フィードバックを伴うPID全方向移動制御。
-  * 
+    
   * **Strategy State Machine**: 大会中のルール変更や試合状況に即座に適応する柔軟な状態遷移制御。
-  * 
+    
   * **World Championship Remote Control**: 世界大会公式の審判用リモートモジュール（QRコード連携Web/アプリインターフェース）との完全統合。
 
 ---
@@ -103,18 +103,18 @@ AIRのハードウェア構成は、ジャパンオープンから世界大会�
 
 ### Software Tools
 * **3D CAD**: Autodesk Fusion360
-* 
+  
 * **EDA (PCB Design)**: KiCad
-* 
+  
 * **IDE / Programming**: Visual Studio Code / MaixPy IDE
-* 
+  
 * **Presentation & Media**: Canva
 
 ### Hardware & Manufacturing Equipment
 * **3D Printers**: Bambu Lab A1 mini / Bambu Lab P1S / Flashforge Adventurer 5M
-* 
+  
 * **PCB Fabrication**: JLCPCB (2層・4層基板 / SMT基板実装アッセンブリサービス活用)
-* 
+  
 * **Machining / Tools**: 小型CNC加工機
 
 ---
@@ -124,13 +124,13 @@ AIRのハードウェア構成は、ジャパンオープンから世界大会�
 ロボットを構成するすべてのカスタム機械部品は Autodesk Fusion360 で設計されています。
 
 * **シャーシ構造** / Chassis
-* 
+  
 * **キッカーユニット** / Kicker unit
-* 
+  
 * **センサマウント各種** / Sensor mounts
-* 
+  
 * **オムニホイールモジュール** / Omni wheel modules
-* 
+  
 * **超小型BLDCドリブラー機構** / Micro BLDC Dribbler module
 
 ---
