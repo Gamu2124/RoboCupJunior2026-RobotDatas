@@ -1,46 +1,45 @@
-# AIR - RoboCupJunior2026 Robot Datas
+# AIR - RoboCupJunior 2026 World Champion Robot Data Repository
 
-RoboCupJunior Soccer Lightweight ロボット公開リポジトリ
-RoboCupJunior Soccer Lightweight Robot Repository
+RoboCupJunior Soccer Lightweight 2026 シーズンにおいて、ジャパンオープン優勝および世界大会（韓国・仁川）にて**競技優勝・総合優勝・コミュニティ賞の3冠**を達成したロボット「AIR」の完全設計データ公開リポジトリです。
+
+This repository contains the full design, hardware, and software data of **AIR**, the 1st Place Champion in both Japan Open and World Championship (Individual & Overall Champion) in the RoboCupJunior Soccer Lightweight 2026 season.
 
 ---
 
 # 概要 / Overview
 
-本リポジトリには、**AIR** が RoboCupJunior Soccer Lightweight 2026 シーズン（Japan Open & World Championship in Incheon）で使用したロボットの機械設計・回路設計・組込みソフトウェアなどの開発データを公開しています。
+本リポジトリは、次世代のRCJコミュニティおよび学生ロボティクスエンジニアへのナレッジ共有を目的として公開されています。
+2年間の開発で積み上げた回路設計（多層基板）、組み込みソフトウェア（マルチマイコン・FreeRTOS分散処理）、3D CADデータを網羅しています。
 
-This repository contains the hardware and software design files used by **AIR** in the RoboCupJunior Soccer Lightweight 2026 season.
-
----
-
-# 公開内容 / Contents
-
-* **3DCADデータ** / 3D CAD files
-* **回路基板データ** / PCB design files
-* **組込みソフトウェア** / Embedded software
-* **プレゼンポスター** / Presentation poster
+We open-source our complete robot design to support the global RCJ community and future student roboticists. It covers custom multi-layer PCB design, high-speed multi-MCU embedded firmware, and precision 3D CAD models.
 
 ---
 
-# 大会実績 / Competition Result
+# 大会実績 / Competition Results
 
 * **RoboCupJunior Japan Open 2026**
   * **競技 1位** / 1st Place in Japan Open
-
 * **RoboCup World Championship 2026 (Incheon, Republic of Korea)**
   * **競技 優勝** / Individual World Champion (1st Place)
   * **総合 優勝** / Overall World Champion (1st Place)
-  * **コミュニティアワード** / Community Award
+  * **コミュニティ アワード** / Community Award
 
 ---
 
-# ロボットの特徴 / Features
+# 技術的ハイライト / Technical Highlights
 
-* **カスタム機械設計** / Custom mechanical design
-* **自作多層PCB** / Custom-designed multi-layer PCBs
-* **全方向移動機構** / Omnidirectional drive system
-* **高速制御システム & マルチマイコン分散処理** / High-speed embedded control & Distributed multi-MCU architecture
-* **モジュール化されたソフトウェア構成** / Modular software architecture
+AIRのシステムは、超高速処理と徹底された堅牢性（耐ノイズ・電源安定性）を軸に設計されています。
+
+* **RP2350 & Teensy 4.1 による超高速分散処理**  
+  メインマイコン(Teensy 4.1 600MHz)の8ch UARTを活用し、サブマイコン群（RP2350A/B, XIAO ESP32-S3）へ処理を分散。
+* **24基のTSSP58038による高密度ボール検出**  
+  RP2350Aを用いて24個の赤外線センサーを直列・高速サンプリングし、死角のない高精度なボール位置・距離の推定を実現。
+* **FreeRTOSを用いた非ブロッキング超音波壁面計測**  
+  `pulseIn` 関数によるブロッキング問題を解消するため、ESP32-S3のデュアルコアとFreeRTOSを活用してバックグラウンドで高周波壁面距離を計測。
+* **信頼性を極めた電源・回路設計**  
+  DCDCコンバータ(AP64500SP)による3.3V/7.0V分離給電、ハイ/ローサイドMOSFET（Nch 60V100A）を用いた大電流キッカー駆動、および全マイコンの自動書き込み・デバッグ機能の一体化。
+* **世界大会用レフェリーモジュール適応**  
+  QRコードを介したWeb/アプリリモートコントロールシステムとの連携機能を搭載。
 
 ---
 
@@ -48,167 +47,108 @@ This repository contains the hardware and software design files used by **AIR** 
 
 ```text
 .
-├── CAD/            # 3DCADデータ / CAD files
-├── PCB/            # 回路設計データ / PCB files
-├── Software/       # ソースコード / Source code
-├── Poster/         # プレゼンポスター / Presentation poster
-└── Docs/           # ドキュメント / Documents
+├── CAD/            # 3DCADデータ (Autodesk Fusion)
+├── PCB/            # 回路設計データ (KiCad) / JLCPCB製造データ
+├── Software/       # 組み込みソースコード (C/C++, Python)
+├── Poster/         # プレゼンポスター & 世界大会インタビュースライド
+└── Docs/           # 回路図補足・システム構成ドキュメント
 ```
 
-# ハードウェア / Hardware
+# ハードウェア仕様とシステム進化 / Hardware Architecture & Evolution
 
-ジャパンオープン（Japan Open）および世界大会（World Championship）における全ハードウェア構成です。
+AIRのハードウェア構成は、ジャパンオープンから世界大会（Incheon）にかけて大幅な進化を遂げています。
 
-Complete hardware specifications for both the Japan Open and World Championship models.
-
-## Japan Open モデル構成 / Japan Open Specification
-
-| 部品 / Component | 内容・型番 / Description & Part Number | 詳細 / Details |
+| ユニット / System | Japan Open モデル | World Championship (Incheon) モデル |
 | --- | --- | --- |
-| Main MCU | Teensy 4.1 (DigiKey) | 600MHz動作、8×UARTポート（内7ポートをサブマイコン等に使用） |
-| Ball Sub MCU | ATmega32U4 (JLCPCB SMT) | ICSPブートローダー書き込み、USB Type-C書き込み対応 |
-| Line Sub MCU | ATmega2560 (JLCPCB SMT) | ピン数確保、USB Type-C (CH340E) 書き込み |
-| Wall/US Sub MCU | Seeed Studio XIAO ESP32-S3 (秋月電子) | FreeRTOS デュアルコア制御による非ブロッキング超音波計測 |
-| UI Sub MCU | ESP32 WROOM-32E (秋月電子) | 自動書き込み回路 (CH340K/Type-C)、Bluetoothデバッグ、Type-C VBUSによる挿入検知LED |
-| Motor Driver | DRV8432 (JLCPCB SMT) | 1ICで2モータ駆動、モジュール化基板 |
-| Kicker Solenoid | CB1037 (タカハ機工様 提供品) | 低抵抗・高出力ソレノイド |
-| Kicker MOSFET | Pch (60V15A) / Nch (60V100A) (秋月電子) | ハイサイド充電制御 & Nch大電流ローサイドキック駆動 |
-| Kicker Photocoupler | AQW212EHA (DigiKey) | メインマイコンとキッカー回路の光学絶縁 |
-| Kicker Boost | XL6009 昇圧モジュール (Amazon) | MAX50V耐圧改造・ルール限界値へ昇圧調整 |
-| IMU | BNO055 (秋月電子) | I2C接続、適切なプルアップ抵抗・配線長短縮対策 |
-| Level Shifter | BSS138 自作モジュール (秋月電子) | 5V ↔ 3.3V ロジックレベル変換 (ラインマイコン間) |
-| Ball Sensor | TSSP4038 (DigiKey) | 赤外線検知 |
-| Line Sensor | B19H1LS フォトトランジスタ (DigiKey) | 表面実装、はんだ付け性・波長マッチング向上 |
-| Line Comparator | LM393 (DigiKey) | アナログ→デジタル変換、PWM入力＋RCフィルターによる動的閾値調整 |
-| Ultrasonic Sensor | RCW-0001 小型超音波センサー (Amazon) ×2 | 壁面距離計測 |
-| Power System | LM2576 5V DCDCコンバータ (DigiKey) | 40V高耐圧サージ対策、物理波動スイッチ＋MOSFET駆動回路 |
-| UI & Indicator | OLED SSD1306 / NeoPixel WS2812B (秋月電子) | ボール・ライン・ゴール角度表示用UI |
-
-## World Championship モデル構成 / World Championship Specification
-
-| 部品 / Component | 内容・型番 / Description & Part Number | 詳細 / Details |
-| --- | --- | --- |
-| Main MCU | Teensy 4.1 | 安定動作・メイン処理継続 |
-| Main Board Sub MCU | Seeed Studio XIAO ESP32-S3 ×2 | 開発期間短縮のためのマルチボード構成、FreeRTOS処理 |
-| Ball Sub MCU | RP2350A (USB Type-C) | 高速処理・最適ピンアサイン |
-| Line Sub MCU | RP2350B (USB Type-C) | 処理速度大幅改善、豊富でジャストサイズなピン数 |
-| UI / US Sub MCU | Seeed Studio XIAO ESP32-S3 | OLED / スイッチ / NeoPixel 制御、メイン基板へ直付け |
-| Motor Driver | DRV8432 | 継続採用 |
-| Dribbler (Option) | 超小型 BLDC モーター + 専用 ESC | アリエクスプレス調達、ドリブラー試験搭載 |
-| Kicker Solenoid | CB1037 (タカハ機工様 提供品) | AQW212 フォトカプラ絶縁駆動継続 |
-| Kicker Boost | XL6009 昇圧モジュール | 昇圧回路をキッカー基板へ直挿し |
-| IMU | BNO055 | 継続採用 |
-| Ball Sensor | TSSP58038 ×24個 | RP2350Aによる24個直列読み取り |
-| Line Sensor | B19H1LS フォトトランジスタ + LM393 | エンジェル32個 + サイドライン4個×2（ワイヤードOR回路統合） |
-| Line Dimming | MOSFET 調光機能 | LED光量可変調整回路 |
-| Power System | AP64500SP DCDCコンバータ (DigiKey) | 3.3V固定出力 & 7.0V可変出力（メイン基板で5V/3.3V降圧） |
-| Power Switch | トグル型ロッカースイッチ | 耐久性向上・大会中故障ゼロ |
-| Voltage Measurement | 抵抗分圧回路 | 電源電圧リアルタイム取得機能（ハードウェア実装済み） |
-| UI & System | メイン基板統合型UI (OLED / NeoPixel) | 直径15cm超大型メイン基板、世界大会用QRコードWeb/アプリリモートコントロールモジュール対応 |
+| **Main MCU** | Teensy 4.1 (600MHz / 8×UART) | Teensy 4.1 (安定動作・メイン制御継続) |
+| **Main Sub MCU** | — | Seeed Studio XIAO ESP32-S3 ×2 (マルチボード・FreeRTOS処理) |
+| **Ball Sub MCU & Sensors** | ATmega32U4 + TSSP4038 | **RP2350A + TSSP58038 × 24個** (高密度24方位直列読取) |
+| **Line Sub MCU & Sensors** | ATmega2560 + B19H1LS / LM393 | **RP2350B + B19H1LS 40個** (エンジェル32+サイド8) + MOSFET調光 |
+| **Wall/US MCU** | XIAO ESP32-S3 (FreeRTOS超音波制御) | XIAO ESP32-S3 (メイン基板直付け統合) |
+| **UI & Remote Control** | ESP32 WROOM-32E + OLED + NeoPixel | **直径15cm基板一体型UI** + 世界大会公式リモートモジュール対応 |
+| **Motor Driver** | DRV8432 (2chモジュール化基板) | DRV8432 (継続採用) + 試験的超小型BLDCドリブラー |
+| **Kicker System** | CB1037 + Pch/Nch (60V100A) MOSFET | CB1037 + AQW212光絶縁 + 直挿しXL6009昇圧 |
+| **Power Distribution** | LM2576 (5V) + 波動スイッチ | **AP64500SP** (3.3V固定 & 7.0V可変) + トグルロッカースイッチ |
 
 ---
 
-# ソフトウェア / Software
+# ソフトウェア機能 / Software Architecture
 
-主に C/C++ および Python を用いて開発されています。
+主に C/C++ および Python を用いて開発された、マルチマイコン分散処理による高速制御システムです。
 
-Developed primarily using C/C++ and Python.
-
-## 主な機能 / Main Features
-
-* **ボール追跡・位置算出** / Ball tracking and position estimation
-* **白線検知・コート内維持** / White line detection and field boundary control
-* **超音波・FreeRTOS並行処理による壁面非ブロッキング距離計測** / Non-blocking wall distance measurement using FreeRTOS dual-core
-* **PIDモータフィードバック制御** / PID-based motor feedback control
-* **状態遷移ベース戦略・ルール適応** / State-machine strategy and rule adaptation system
-* **マルチマイコン間UARTメッシュ通信 & センサ統合** / Multi-MCU UART communication & sensor fusion
-* **世界大会用コントロールモジュール適応** / World Championship referee module integration via QR code web/app interface
+* **多層的アルゴリズム**
+  * **Ball Tracking**: 24個のTSSP58038から得られるデジタルの入力パターンをRP2350Aで高速処理し、死角のない最確方位と距離を即座に算出。
+  * **Line Keep**: 40個の表面実装フォトトランジスタ（B19H1LS）とLM393コンパレータを採用。PWM入力＋RCフィルターによる動的閾値調整とワイヤードOR回路の併用で、ライン進入時の超高速レスポンスを実現。
+  * **Wall Distance**: ESP32-S3のFreeRTOS（デュアルコアタスク）を活用し、`pulseIn` 関数によるマイコンブロッキングを排除。バックグラウンドで壁面距離を高周波サンプリング。
+  * **Motion Control**: IMU (BNO055) フィードバックを伴うPID全方向移動制御。
+  * **Strategy State Machine**: 大会中のルール変更や試合状況に即座に適応する柔軟な状態遷移制御。
+  * **World Championship Remote Control**: 世界大会公式の審判用リモートモジュール（QRコード連携Web/アプリインターフェース）との完全統合。
 
 ---
 
-# 使用ソフトウェア・設備 / Software & Equipment
+# 開発環境・使用設備 / Development Environment & Equipment
 
-## ソフトウェア / Software
+### Software Tools
+* **3D CAD**: Autodesk Fusion
+* **EDA (PCB Design)**: KiCad
+* **IDE / Programming**: Visual Studio Code / Arduino IDE / MaixPy IDE
+* **Presentation & Media**: Canva
 
-| 用途 / Purpose | ソフトウェア / Software |
-| --- | --- |
-| 3DCAD | Autodesk Fusion |
-| EDA (PCB Design) | KiCad |
-| Programming | Visual Studio Code / Arduino IDE / MaixPy IDE |
-| Poster & Presentation | Canva |
-
-## 設備 / Equipment
-
-| 用途 / Purpose | 設備 / Equipment |
-| --- | --- |
-| 3D Printer | Bambu Lab A1 mini / Bambu Lab P1S / Flashforge Adventurer 5M |
-| PCB Fabrication | JLCPCB (2層・4層基板 / SMTアッセンブリ) |
-| Machining / Tools | CNC Machine |
+### Hardware & Manufacturing Equipment
+* **3D Printers**: Bambu Lab A1 mini / Bambu Lab P1S / Flashforge Adventurer 5M
+* **PCB Fabrication**: JLCPCB (2層・4層基板 / SMT基板実装アッセンブリサービス活用)
+* **Machining / Tools**: 小型CNC加工機
 
 ---
 
-# CAD
+# CAD設計データ / CAD Models
 
-ロボットの機械部品は3DCAD（Autodesk Fusion）で設計されています。
+ロボットを構成するすべてのカスタム機械部品は Autodesk Fusion で精密設計されています。
 
-Mechanical parts of the robot were designed using 3D CAD (Autodesk Fusion).
-
-## 含まれるデータ（一部） / Included Designs (Partial)
-
-* シャーシ / Chassis
-* キッカーユニット / Kicker unit
-* センサマウント / Sensor mounts
-* オムニホイールユニット / Omni wheel modules
+* **シャーシ構造** / Chassis
+* **キッカーユニット** / Kicker unit
+* **センサマウント各種** / Sensor mounts
+* **オムニホイールモジュール** / Omni wheel modules
+* **超小型BLDCドリブラー機構** / Micro BLDC Dribbler module
 
 ---
 
-# PCB
+# 公開基板データ / PCB Designs
 
-ロボットで使用した自作PCB（KiCad）の設計データも公開しています。全基板はJLCPCBにて製造されています。
+ロボットに使用されている自作基板（KiCad）の全設計ファイルです。すべての基板は JLCPCB 様の製造・SMTアッセンブリ支援を受けて制作されています。
 
-Custom PCBs created with KiCad are included. All boards were fabricated by JLCPCB.
-
-## 含まれる基板（一部） / Included Boards (Partial)
-
-* **メイン基板 (`ball unit` / メインボード)** / Main control board
-* **ボールセンサー基板** / Ball sensor board
-* **ラインセンサー基板 (`linesensor unit`)** / Line sensor board
-* **電源基板 (`power unit`)** / Power distribution board
-* **MD & 昇圧統合基板** / Motor driver & boost converter board
-* **キッカー基板** / Kicker board
-* **UI基板** / UI & Debug board
+1. **メイン基板 (`main_unit`)**: 各種マイコン・IMU・UI統合型 直径15cm大型基板
+2. **ボールセンサー基板 (`ball_unit`)**: TSSP58038×24 ＆ RP2350A 搭載高密度基板
+3. **ラインセンサー基板 (`line_unit`)**: 特殊クワガタ形状・B19H1LS/LM393/RP2350B 搭載基板
+4. **電源基板 (`power_unit`)**: AP64500SP採用 高効率・高耐圧電源基板
+5. **モータドライバ基板 (`md_unit`)**: DRV8432 2chモジュール基板
+6. **キッカー制御基板 (`kicker_unit`)**: 昇圧＆大電流MOSFET・AQW212光絶縁回路
 
 ---
 
-# 開発理念 / Development Philosophy
+# 開発理念とメッセージ / Our Journey & Philosophy
 
-RCJコミュニティや学生ロボティクス開発への貢献を目的として、本リポジトリを公開しています。
+回路設計を本格的に始めてからわずか2年。最初は手探りの基板作成からスタートしましたが、試行錯誤と改良を重ねた結果、世界大会総合優勝という最高の成果を得ることができました。
 
-We believe open-source robotics accelerates learning and innovation.
+「オープンソースロボティクスが学びと革新を加速させる」という信念のもと、私たちが2年間で培ったすべての技術ノウハウを公開します。
 
 このリポジトリが、
-* 新規チームの参考になること
-* 実践的なロボット工学学習につながること
-* RCJコミュニティ全体の発展につながること
+* これからRCJに挑戦する新規チームの技術的道しるべとなること
+* より高度なロボット工学に挑む学生エンジニアの刺激となること
+* RCJコミュニティ全体の技術底上げに寄与すること
 
-を願っています。
+を心から願っています。
 
-We hope this repository helps:
-* New RCJ teams get started
-* Share practical engineering knowledge
-* Improve the RCJ ecosystem
+> *"Great engineering starts with shared knowledge."*
 
 ---
 
 # スポンサー / Sponsors
 
-本プロジェクトは、以下の企業・団体の支援を受けています。
+本プロジェクトの挑戦と世界大会優勝は、以下の素晴らしいスポンサー企業・団体様のご支援により実現いたしました。心より感謝申し上げます。
 
-This project is supported by the following companies and organizations.
-
-* **JLCPCB**  
-  https://jlcpcb.com/  
-  （日本語発注システム: https://jlcpcb.com/jp/ ）
+* **JLCPCB** (高品質基板製造およびSMTアッセンブリ支援)  
+  https://jlcpcb.com/ (日本語発注サイト: https://jlcpcb.com/jp/ )
 * **DigiKey**  
   https://www.digikey.jp/
 * **株式会社人機一体**  
@@ -217,7 +157,7 @@ This project is supported by the following companies and organizations.
   http://www.system-i-int.co.jp/
 * **maxon**  
   https://maxonjapan.com/
-* **タカハ機工株式会社**  
+* **タカハ機工株式会社** (CB1037ソレノイドご提供)  
   https://www.takaha.co.jp/
 * **ライフ&キャリアコンサルティング LACIQUE**  
   https://lacique.jp/
@@ -227,12 +167,13 @@ This project is supported by the following companies and organizations.
 
 ---
 
-# チーム情報 / Team
+# チーム情報 / Team Information
 
 ## AIR
 
-RoboCupJunior Soccer Lightweight Team from Japan.
+RoboCupJunior Soccer Lightweight Team from Japan  
+World Champion 2026
 
-* **X (Twitter)**: https://x.com/Air_3838
-* **YouTube**: https://www.youtube.com/@AIR-RCJ
-* **note**: https://note.com/air_rcj
+* **X (Twitter)**: [@Air_3838](https://x.com/Air_3838)
+* **YouTube**: [AIR-RCJ Channel](https://www.youtube.com/@AIR-RCJ)
+* **note**: [AIR Official note](https://note.com/air_rcj)
