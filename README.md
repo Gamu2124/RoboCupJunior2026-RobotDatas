@@ -173,31 +173,68 @@ AIRのハードウェア構成は、ジャパンオープンから世界大会�
 
 * **JLCPCB** (高品質基板製造およびSMTアッセンブリ支援)  
   https://jlcpcb.com/ (日本語発注サイト: https://jlcpcb.com/jp/ )
+  
 * **DigiKey**  
   https://www.digikey.jp/
+  
 * **株式会社人機一体**  
   https://www.jinki.jp/
-* **株式会社システムアイインターナショナル**  
-  http://www.system-i-int.co.jp/
-* **maxon**  
+  
+* **MAXON**  
   https://maxonjapan.com/
+  
 * **タカハ機工株式会社** (CB1037ソレノイドご提供)  
   https://www.takaha.co.jp/
+  
+* **株式会社システムアイインターナショナル**  
+  https://www.systemi.com/
+  
 * **ライフ&キャリアコンサルティング LACIQUE**  
-  https://lacique.jp/
+  hhttps://www.lacique.com/
+  
 * **医療法人社団 翠会 水口病院**  
-* **JOJISTABLE**  
-* **立命館 (Ritsumeikan)**  
+  https://www.minakuchi-hp.or.jp/
+
+* **JOJISTABLE**
+  https://x.com/JojiStable
+
+* **立命館守山高校　&　大学 (Ritsumeikan)**
+  https://www.mrc.ritsumei.ac.jp/
+  https://www.ritsumei.ac.jp/
 
 ---
 
-# チーム情報 / Team Information
+# チーム情報・お問い合わせ / Team Information & Contact
 
 ## AIR
 
 RoboCupJunior Soccer Lightweight Team from Japan  
 World Champion 2026
 
+### チーム実績 / Team History
+* **2025 シーズン**
+  * RoboCupJunior Japan Open 2025 🥉 **3位**
+  
+  * RoboCup World Championship 2025 (Salvador, Brazil) 🥉 **Individual 3位**
+  
+* **2026 シーズン**
+  * RoboCupJunior Japan Open 2026 🥇 **優勝 (1位)**
+  
+  * RoboCup World Championship 2026 (Incheon, Republic of Korea) 🏆 **競技 優勝 (1st Place)** / 🏆 **総合 優勝 (1st Place)** / 🏅 **Community Award**
+
+---
+
+### お問い合わせ・ご質問 / Contact Information
+
+本リポジトリの内容や設計データ、その他技術的なご質問やお問い合わせがありましたら、以下までお気軽にご連絡ください！
+
+* **X (Twitter) DM**: [@Air_Gamu_rcj](https://x.com/Air_Gamu_rcj)
+
+* **Email**: [airkorea2026@gmail.com](mailto:airkorea2026@gmail.com)
+
+### 公式メディア・SNS / Links
 * **X (Twitter)**: [@Air_3838](https://x.com/Air_3838)
+
 * **YouTube**: [AIR-RCJ Channel](https://www.youtube.com/@AIR-RCJ)
+
 * **note**: [AIR Official note](https://note.com/air_rcj)
