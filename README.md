@@ -1,4 +1,4 @@
-# AIR - RoboCupJunior 2026 Robot Datas
+# AIR - RoboCupJunior2026 Robot Datas
 
 RoboCupJunior Soccer Lightweight ロボット公開リポジトリ
 RoboCupJunior Soccer Lightweight Robot Repository
