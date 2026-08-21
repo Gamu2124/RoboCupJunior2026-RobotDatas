@@ -198,7 +198,7 @@ AIRのハードウェア構成は、ジャパンオープンから世界大会�
 * **JOJISTABLE**
   https://x.com/JojiStable
 
-* **立命館守山高校　&　大学 (Ritsumeikan)**
+* **立命館守山高校&大学 (Ritsumeikan)**
   https://www.mrc.ritsumei.ac.jp/
   https://www.ritsumei.ac.jp/
 
@@ -208,7 +208,7 @@ AIRのハードウェア構成は、ジャパンオープンから世界大会�
 
 ## AIR
 
-RoboCupJunior Soccer Lightweight Team from Japan  
+RoboCupJunior Soccer LightWeight&Infrared Team from Japan  
 World Champion 2026
 
 ### チーム実績 / Team History
