@@ -19,7 +19,7 @@ We open-source our complete robot design to support the global RCJ community and
 
 * **RoboCupJunior Japan Open 2026**
   
-  * **競技 1位** / 1st Place in Japan Open
+  * **競技 優勝** / 1st Place in Japan Open
    
 * **RoboCup World Championship 2026 (Incheon, Republic of Korea)**
   
@@ -215,12 +215,12 @@ World Champion 2026
 * **2025 シーズン**
   * RoboCupJunior Japan Open 2025 🥉 **3位**
   
-  * RoboCup World Championship 2025 (Salvador, Brazil) 🥉 **Individual 3位**
+  * RoboCup World Championship 2025 (Salvador, Brazil) 🥉 **Individual 3rd Place**
   
 * **2026 シーズン**
   * RoboCupJunior Japan Open 2026 🥇 **優勝 (1位)**
   
-  * RoboCup World Championship 2026 (Incheon, Republic of Korea) 🏆 **競技 優勝 (1st Place)** / 🏆 **総合 優勝 (1st Place)** / 🏅 **Community Award**
+  * RoboCup World Championship 2026 (Incheon, Republic of Korea) 🏆 **Individual 1st Place** / 🏅 **Community Award**
 
 ---
 
