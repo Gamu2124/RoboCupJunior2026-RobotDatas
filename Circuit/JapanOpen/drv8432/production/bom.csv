@@ -1,0 +1,10 @@
+﻿Designator,Footprint,Quantity,Value,LCSC Part #
+"C1, C4, C5, C6, C7",0603,5,0.1u,
+C2,C_Elec_8x10.2,1,220u,
+C3,1206,1,1u,C1848
+D1,0603,1,LED,
+"J1, J2",PinHeader_1x06_P2.54mm_Vertical,2,Conn_01x06_Pin,
+R1,0402,1,47k,
+R2,0603,1,1,
+R3,0805,1,25,C17594
+U1,HSOP-36-1EP_11.0x15.9mm_P0.65mm_SlugUp,1,DRV8432,
