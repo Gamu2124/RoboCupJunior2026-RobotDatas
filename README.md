@@ -1,6 +1,6 @@
 # AIR - RoboCupJunior2026 RobotData Repository
 
-RoboCupJunior Soccer Lightweight 2026 シーズンにおいて、ジャパンオープン優勝および世界大会（韓国・仁川）にて**競技優勝・総合優勝・コミュニティ賞の3冠**を達成したロボット「AIR」の完全設計データ公開リポジトリです。
+RoboCupJunior Soccer Lightweight 2026 シーズンにおいて、ジャパンオープン優勝および世界大会（韓国・仁川）にて**競技優勝・総合優勝・コミュニティ賞**を達成したロボット「AIR」の完全設計データ公開リポジトリです。
 
 This repository contains the full design, hardware, and software data of **AIR**, the 1st Place Champion in both Japan Open and World Championship (Individual & Overall Champion) in the RoboCupJunior Soccer Lightweight 2026 season.
 
