@@ -1,0 +1,633 @@
+Only in .: diff_result.txt
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/Attack/Attack.cpp ./lib/Attack/Attack.cpp
+32,33d31
+< 
+<   // active_Kick = 1;
+53,54c51,52
+<   OMNICAM_center = camera->getOMNICAMcenter();
+<   OMNICAM_flont = camera->getFrontOMNICAMAngle();
+---
+>   // OMNICAM_center = camera->getOMNICAMcenter();
+>   // OMNICAM_flont = camera->getFrontOMNICAMAngle();
+61,75c59,62
+<   // Serial.print(isCam_read);
+<   // Serial.print(" ");
+<   // Serial.println(cam_angle);
+<   // if(analogRead(A8) < 800){
+<   //   active_Kick = 1;
+<   //   // isHold = 1;
+<   // }
+<   int cam_ball_read     = camera->getBallRead();     // 1: 見えている, 0: ロスト
+<   float cam_ball_angle  = camera->getBallAngle();    // 正面を0度とした左右の角度誤差
+<   float cam_ball_dist   = camera->getBallDistance(); // カメラからの生距離（0〜250）
+<   
+<   if(cam_ball_read == 1){
+<     if(cam_ball_angle >= 30){
+<       Ball_angle = cam_ball_angle;
+<     }
+---
+>   // Serial.println(isHold)
+>   if(analogRead(A8) < 400){
+>     active_Kick = 1;
+>     // isHold = 1;
+77,84d63
+<   
+<   if(Ball_angle == 999){
+<     if(cam_ball_read == 1){
+<       Ball_angle = cam_ball_angle;
+<       // get_Ball_far = cam_ball_dist;
+<     }
+<   }
+<   if(isHold == 1) Ball_angle = 0;
+86,91d64
+<   // キャリブレーション完了後の通常動作
+<   // }
+<   // else{
+<   //   esc.setPulse(1500);
+<   // }
+<   // Serial.println(Ball_angle);
+117a91
+> 
+497c471
+<         cam_angle = 1 * (float)(thisthis - CENTER_VAL) * (HFOV / 250.0);
+---
+>         cam_angle = -1 * (float)(thisthis - CENTER_VAL) * (HFOV / 250.0);
+499,508c473
+<       float now = bnopid->getDIR();
+<       if(now >= 0){
+<         go_angle = 20;
+<       }
+<       else if(now < 0){
+<         go_angle = 340;
+<       }
+<       else{
+<         go_angle = 0;
+<       }
+---
+>       go_angle = 0;
+551,553d515
+<     else if(abs(simplify->goPM(Ball_angle)) > 30){ 
+<       A = 48;
+<     }
+590,617d551
+<   if(A == 200){ //ホールド待機
+<     B = A;
+<     if(isHold != 1) A = 10;
+<     if(timer_calcBLDC.read_ms() > 800){
+<       A = 250;
+<       timer_calcBLDC.reset();
+<     }
+<     read_LINE = 0;
+< 
+<     if(B == A){
+<       motor->calc(180, bnopid->get_pd(0), 0, int(isCatch_Ball_pid), cam_angle);
+<     }
+<   }
+< 
+<   if(A == 250){ //引き戻し
+<     B = A;
+<     if(Line_angle != 999) A = 20;
+<     if(isCam_read == 1 || isHold != 1) A = 10;
+<     // if(abs(simplify->goPM(Ball_angle)) > 20) A = 48;
+<     motor_speed = int(timer_calcBLDC.read_ms() / 20); //スピードを徐々に上げる感じ
+<     if(motor_speed > 200){
+<       motor_speed = 200;
+<     }
+<     if(B == A){
+<       motor->calc(180, bnopid->get_pd(0), motor_speed, int(isCatch_Ball_pid), cam_angle);
+<     }
+<   }
+< 
+619d552
+<  
+628,633d560
+<   if(Ball_angle == 999 && Line_angle == 999){
+<     go_angle = 0;
+<   }
+< 
+<   // Serial.println(B);
+< 
+669,673d595
+< 
+<         if(isHold == 1){
+<           A = 200;
+<           timer_calcBLDC.reset();
+<         }
+683c605
+<         pid_angle = bnopid->get_pd(0); 
+---
+>         pid_angle = bnopid->get_pd(0);
+699c621
+<     motor->calc(float(go_angle), pid_angle, motor_speed, int(isCatch_Ball_pid), cam_angle);
+---
+>     motor->calc(float(go_angle), pid_angle, int(motor_speed), int(isCatch_Ball_pid), cam_angle);
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/Attack/Attack.h ./lib/Attack/Attack.h
+86d85
+<   TIMER timer_calcBLDC;
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/BALL/BALL.h ./lib/BALL/BALL.h
+49c49
+<     const int KICK_VAL = 800;
+---
+>     const int KICK_VAL = 200;
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/BNOPID/BNOPID.cpp ./lib/BNOPID/BNOPID.cpp
+5,9d4
+<   Wire.setSDA(18); // Wire1のSDAピン
+<   Wire.setSCL(19); // Wire1のSCLピン
+<   Wire.begin();
+<   Wire.setClock(400000); 
+<   delay(100);
+11,13c6,7
+<   // I2Cクロックを高速化（Teensy 4.1のパワーを活かす。BNO055はWire1にあるためWire1を設定）
+< 
+< 
+---
+>   // I2Cクロックを高速化（Teensy 4.1のパワーを活かす）
+>   Wire.setClock(400000); 
+22,24c16
+<   // getEventの代わりに軽量なgetVectorを使用
+<   imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
+<   event.orientation.x = euler.x();
+---
+>   bno.getEvent(&event);
+77,80c69
+<   // 制御周期を5ms（200Hz）に高速化
+<   if (now_ms - last_bno_read < 5) return last_pid;
+<   double dt_sec = (now_ms - last_bno_read) / 1000.0;
+<   if (dt_sec <= 0.0) dt_sec = 0.001; // ゼロ除算防止の防御的コード
+---
+>   if (now_ms - last_bno_read < 10) return last_pid;
+83,88c72,73
+<   // 1. 通信と角度取得（軽量なgetVectorを用いて物理読み出しのオーバーヘッドを削減）
+<   imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
+<   event.orientation.x = euler.x();
+<   
+<   // 物理的なロボットの向き（adderを含まない実測値）と、目標を含めたNow_DIRを取得
+<   double physical_DIR = get_x(0);
+---
+>   // 1. 通信と角度取得
+>   bno.getEvent(&event);
+96c81
+<   // 3. I分の計算（ダイナミックdtを適用）
+---
+>   // 3. I分の計算（必要な時だけ溜める）
+98c83
+<     i += p * dt_sec; 
+---
+>     i += p * 0.01; // dt=10ms固定
+104,120c89,91
+<   // 4. D分の計算（微分先行型：測定値の微分を用いて目標値変更によるキックを防止）
+<   static double pre_physical_DIR = 0;
+<   static bool first_run = true;
+<   if (first_run) {
+<     pre_physical_DIR = physical_DIR;
+<     first_run = false;
+<   }
+< 
+<   // 物理角度の変動幅（境界またぎ補正付き）
+<   double d_angle = physical_DIR - pre_physical_DIR;
+<   if (d_angle > 180) d_angle -= 360;
+<   if (d_angle < -180) d_angle += 360;
+< 
+<   // 測定値の微分（D-on-Measurement）: 出力は -Kd * (dy/dt) となるため符号はマイナス
+<   double raw_d = -d_angle / dt_sec;
+< 
+<   // 前回のD分を80%、今回のD分を20%で混ぜるローパスフィルタ
+---
+>   // 4. D分の計算（ローパスフィルタ付き）
+>   double raw_d = (p - pre_p) / 0.01;
+>   // 前回のD分を80%、今回のD分を20%で混ぜる（数値は要調整）
+123d93
+<   pre_physical_DIR = physical_DIR;
+125,128c95,99
+<   // 5. PID合計（極めて迅速に復帰し、かつブレを防ぐ爆速パラメータ）
+<   double kp = 2.2;  // 1.2から2.2へ引き上げ、より素早く復帰
+<   double ki = 0.0;  // まずは0で安定
+<   double kd = 0.08; // 0.03から0.05へ引き上げ、オーバーシュートを抑える急制動0.07
+---
+>   // 5. PID合計（定数を調整しやすくする）
+>   // 以前のkp=1.2なら、kdは0.01〜0.05くらいから始めるのがセオリーです
+>   double kp = 1.5;
+>   double ki = 0.0; // まずは0でOK
+>   double kd = 0.02; // 微量に入れる
+134,141d104
+< 
+<   // Teleplot用の出力を追加（正面0度を基準とした現在角度、目標値0、PIDの操作量）
+<   // Serial.print(">relative_angle3:");
+<   // Serial.print(get_x(0)); // 現在の相対角度（-180〜180度、正面が0）
+<   // Serial.print(";target_angle:0"); // 目標値（0度）の基準線
+<   // Serial.print(";pid_output:");
+<   // Serial.println(pid); // PIDの出力（操作量）
+< 
+173,184d135
+< 
+<   // BNO055から線形加速度（重力を除いた加速度）を取得
+<   imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
+<   // X軸とY軸の加速度をベクトル合成 (合成値 = √(x^2 + y^2))
+<   double accel_xy = sqrt(accel.x() * accel.x() + accel.y() * accel.y());
+< 
+<   // Teleplot用のフォーマットで出力 (>変数名:タイムスタンプ:値)
+<   // 横軸が時間(t)、縦軸が合成加速度(accel_xy)になります
+<   Serial.print(">accel_xy:");
+<   Serial.print(millis());
+<   Serial.print(":");
+<   Serial.println(accel_xy);
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/BNOPID/BNOPID.h ./lib/BNOPID/BNOPID.h
+20c20
+<   Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
+---
+>   Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire1);
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/Cam/Cam.cpp ./lib/Cam/Cam.cpp
+16c16
+<   if(Serial6.available() < 8){
+---
+>   if(Serial7.available() < 8){
+20,21c20,21
+<   if(Serial6.peek() != 255){
+<     Serial6.read();   // 1バイトだけ捨てる
+---
+>   if(Serial7.peek() != 255){
+>     Serial7.read();   // 1バイトだけ捨てる
+25c25
+<   Serial6.read(); // header = 255
+---
+>   Serial7.read(); // header = 255
+27,32c27,32
+<   ball_dot        = Serial6.read(); // BallX (0〜250)
+<   ball_distance   = Serial6.read(); // BallY (0〜250)
+<   blue_dot        = Serial6.read(); // BlueX
+<   blue_width      = Serial6.read(); // BlueW
+<   yellow_dot      = Serial6.read(); // YellowX
+<   yellow_width    = Serial6.read(); // YellowW
+---
+>   ball_dot        = Serial7.read(); // BallX (0〜250)
+>   ball_distance   = Serial7.read(); // BallY (0〜250)
+>   blue_dot        = Serial7.read(); // BlueX
+>   blue_width      = Serial7.read(); // BlueW
+>   yellow_dot      = Serial7.read(); // YellowX
+>   yellow_width    = Serial7.read(); // YellowW
+35d34
+<   selected_color = 2;
+69,78c68,77
+<   // if(ball && ball->isCaught()){
+<   //   Serial7.write(255); 
+<   //   Serial7.write(1); 
+<   //   Serial7.write(255);
+<   // }
+<   // else{ 
+<   //   Serial7.write(255); 
+<   //   Serial7.write(255); 
+<   //   Serial7.write(255);
+<   // }
+---
+>   if(ball && ball->isCaught()){
+>     Serial7.write(255); 
+>     Serial7.write(1); 
+>     Serial7.write(255);
+>   }
+>   else{ 
+>     Serial7.write(255); 
+>     Serial7.write(255); 
+>     Serial7.write(255);
+>   }
+84,85c83,84
+<   // byte trash_1;
+<   // byte trash_2;
+---
+>   byte trash_1;
+>   byte trash_2;
+87,89c86,88
+<   // if(Serial6.available() < 6){
+<   //   return;
+<   // }
+---
+>   if(Serial6.available() < 6){
+>     return;
+>   }
+91,96c90,95
+<   // trash_1 = Serial6.read();   
+<   // byte_blue_y = Serial6.read();  
+<   // byte_blue_x = Serial6.read();  
+<   // byte_yellow_y = Serial6.read();   
+<   // byte_yellow_x = Serial6.read();   
+<   // trash_2 = Serial6.read();  
+---
+>   trash_1 = Serial6.read();   
+>   byte_blue_y = Serial6.read();  
+>   byte_blue_x = Serial6.read();  
+>   byte_yellow_y = Serial6.read();   
+>   byte_yellow_x = Serial6.read();   
+>   trash_2 = Serial6.read();  
+98,104c97,103
+<   // // フレームチェック
+<   // if(trash_1 != 255 || trash_2 != 255){
+<   //   byte_y_2 = last_byte_y_2;
+<   //   byte_x_2 = last_byte_x_2;
+<   //   Serial6.read();
+<   //   return;
+<   // }
+---
+>   // フレームチェック
+>   if(trash_1 != 255 || trash_2 != 255){
+>     byte_y_2 = last_byte_y_2;
+>     byte_x_2 = last_byte_x_2;
+>     Serial6.read();
+>     return;
+>   }
+106,113c105,112
+<   // if(selected_color == 1){
+<   //   byte_y_2 = byte_blue_y;
+<   //   byte_x_2 = byte_blue_x;
+<   // }
+<   // else if(selected_color == 2){
+<   //   byte_y_2 = byte_yellow_y;
+<   //   byte_x_2 = byte_yellow_x;
+<   // }
+---
+>   if(selected_color == 1){
+>     byte_y_2 = byte_blue_y;
+>     byte_x_2 = byte_blue_x;
+>   }
+>   else if(selected_color == 2){
+>     byte_y_2 = byte_yellow_y;
+>     byte_x_2 = byte_yellow_x;
+>   }
+115,123c114,122
+<   // // cam_flag
+<   // if(byte_y_2 < 253){
+<   //   cam_flag = 1;
+<   //   last_byte_y_2 = byte_y_2;
+<   //   last_byte_x_2 = byte_x_2;
+<   // }
+<   // else{
+<   //   cam_flag = 0;
+<   // }
+---
+>   // cam_flag
+>   if(byte_y_2 < 253){
+>     cam_flag = 1;
+>     last_byte_y_2 = byte_y_2;
+>     last_byte_x_2 = byte_x_2;
+>   }
+>   else{
+>     cam_flag = 0;
+>   }
+125,136c124,135
+<   // // return_flag
+<   // if(byte_x_2 <= 20){
+<   //   if(20 < last_byte_x_2){
+<   //     timer_return.reset();
+<   //   }
+<   //   if(1000 <= timer_return.read_ms()){
+<   //     return_flag = 1;
+<   //   }
+<   // }
+<   // if(byte_x_2 >= 25){
+<   //   return_flag = 0;
+<   // }
+---
+>   // return_flag
+>   if(byte_x_2 <= 20){
+>     if(20 < last_byte_x_2){
+>       timer_return.reset();
+>     }
+>     if(1000 <= timer_return.read_ms()){
+>       return_flag = 1;
+>     }
+>   }
+>   if(byte_x_2 >= 25){
+>     return_flag = 0;
+>   }
+138,145c137,144
+<   // if(cam_flag == 0){
+<   //   Back_cam_angle = Last_Back_cam_angle;
+<   // }
+<   // else{
+<   //   Back_cam_angle = (((byte_y_2 - 122.5) /2.5 +180) - 10);
+<   // }
+<   // // Front_cam_angle = (((byte_y_2 - 122.5) / 2.5) * (-1));
+<   // Last_Back_cam_angle = Back_cam_angle; 
+---
+>   if(cam_flag == 0){
+>     Back_cam_angle = Last_Back_cam_angle;
+>   }
+>   else{
+>     Back_cam_angle = (((byte_y_2 - 122.5) /2.5 +180) - 10);
+>   }
+>   // Front_cam_angle = (((byte_y_2 - 122.5) / 2.5) * (-1));
+>   Last_Back_cam_angle = Back_cam_angle; 
+147,148c146,147
+<   // last_byte_x_2 = byte_x_2;
+<   // last_byte_y_2 = byte_y_2;
+---
+>   last_byte_x_2 = byte_x_2;
+>   last_byte_y_2 = byte_y_2;
+152,163c151
+<   if(Serial7.available() < 4){
+<     return;
+<   }
+<   if(Serial7.read() == 255){
+<     OMNICAM_byte_blue = Serial7.read();
+<     OMNICAM_byte_yellow = Serial7.read();
+<     OMNICAM_byte_green = Serial7.read();
+<     Serial7.read();
+<   }
+<   else{
+<     Serial7.read();
+<   }
+---
+>   // while(Serial7.available() >= 6){
+165,167c153,156
+<   OMNICAM_angle_blue   = OMNICAM_byte_blue * 2;
+<   OMNICAM_angle_yellow = OMNICAM_byte_yellow * 2;
+<   OMNICAM_angle_green = int(OMNICAM_byte_green)*2;
+---
+>   //   if(Serial7.peek() != 255){
+>   //     Serial7.read();
+>   //     continue;
+>   //   }
+169,178c158
+<   if(selected_color == 1){
+<     OMNICAM_angle_flont = -simplify->goPM((float)OMNICAM_angle_yellow);
+<     OMNICAM_opposite    = -simplify->goPM((float)OMNICAM_angle_blue);
+<   }
+<   else if(selected_color == 2){
+<     OMNICAM_angle_flont = -simplify->goPM((float)OMNICAM_angle_blue);
+<     OMNICAM_opposite    = -simplify->goPM((float)OMNICAM_angle_yellow);
+<   }
+<   OMNICAM_center = OMNICAM_angle_green;
+<   OMNICAM_center = -simplify->goPM((float)OMNICAM_center);
+---
+>   //   Serial7.read(); // header
+180,182c160,186
+<   if(OMNICAM_angle_flont == -150) OMNICAM_angle_flont = 999;
+<   if(OMNICAM_opposite == -150)    OMNICAM_opposite = 999;
+<   if(OMNICAM_center == -150)      OMNICAM_center = 999;
+---
+>   //   OMNICAM_byte_blue_c   = Serial7.read();
+>   //   OMNICAM_byte_blue_s   = Serial7.read();
+>   //   OMNICAM_byte_yellow_c = Serial7.read();
+>   //   OMNICAM_byte_yellow_s = Serial7.read();
+>   //   byte footer         = Serial7.read();
+> 
+>   //   if(footer != 0){   // ← 今のログ的にfooterは0
+>   //     continue;
+>   //   }
+> 
+>   //   OMNICAM_angle_blue_c  = OMNICAM_byte_blue_c * 2;
+>   //   OMNICAM_angle_blue_s  = OMNICAM_byte_blue_s * 2;
+>   //   OMNICAM_angle_yellow_c = OMNICAM_byte_yellow_c * 2;
+>   //   OMNICAM_angle_yellow_s = OMNICAM_byte_yellow_s * 2;
+> 
+>   //   if(selected_color == 1){
+>   //     OMNICAM_angle_flont = -simplify->goPM((float)OMNICAM_angle_yellow_s);
+>   //     OMNICAM_opposite    = -simplify->goPM((float)OMNICAM_angle_blue_c);
+>   //   }
+>   //   else if(selected_color == 2){
+>   //     OMNICAM_angle_flont = -simplify->goPM((float)OMNICAM_angle_blue_s);
+>   //     OMNICAM_opposite    = -simplify->goPM((float)OMNICAM_angle_yellow_c);
+>   //   }
+> 
+>   //   if(OMNICAM_angle_flont == -150) OMNICAM_angle_flont = 999;
+>   //   if(OMNICAM_opposite == -150)    OMNICAM_opposite = 999;
+>   // }
+207c211
+<   return cam_height;
+---
+>   return byte_height;
+216,219d219
+< }
+< 
+< float Cam::getOMNICAMcenter() const{
+<   return OMNICAM_center;
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/Cam/Cam.h ./lib/Cam/Cam.h
+36a37
+>   int cam_height = 0;
+56,61c57,64
+<   byte OMNICAM_byte_blue = 0;
+<   byte OMNICAM_byte_yellow = 0;
+<   byte OMNICAM_byte_green = 0;
+<   int OMNICAM_angle_blue = 0;
+<   int OMNICAM_angle_yellow = 0;
+<   int OMNICAM_angle_green = 0;
+---
+>   byte OMNICAM_byte_blue_c = 0;
+>   byte OMNICAM_byte_blue_s = 0;
+>   byte OMNICAM_byte_yellow_c = 0;
+>   byte OMNICAM_byte_yellow_s = 0;
+>   int OMNICAM_angle_blue_c = 0;
+>   int OMNICAM_angle_blue_s = 0;
+>   int OMNICAM_angle_yellow_c = 0;
+>   int OMNICAM_angle_yellow_s = 0;
+64d66
+<   float OMNICAM_center = 0;
+69d70
+<   float cam_height = 0;
+91d91
+<   float getOMNICAMcenter() const;
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/Defence/Defence.cpp ./lib/Defence/Defence.cpp
+48d47
+<   // get_Ball_angle = 90;
+69c68
+<   int Lost_cam_flag = 1;
+---
+>   int Lost_cam_flag = 0;
+690,691d688
+< 
+<   motor_speed *= 0.8;
+Only in ../AIR_MAIN_DCX/lib: ESC
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/lib/MOTOR/MOTOR.cpp ./lib/MOTOR/MOTOR.cpp
+11c11
+<     analogWriteFrequency(LAP[i], 80000);
+---
+>     analogWriteFrequency(LAP[i], 40000);
+38c38
+<   if(speed > 170) speed = 170; //175
+---
+>   // if(speed > 125) speed = 125;
+51,54c51,58
+<   Ave_motor_speed[0] = moveave_1.add(Now_motor_speed[0]);
+<   Ave_motor_speed[1] = moveave_2.add(Now_motor_speed[1]);
+<   Ave_motor_speed[2] = moveave_3.add(Now_motor_speed[2]);
+<   Ave_motor_speed[3] = moveave_4.add(Now_motor_speed[3]);
+---
+>   // Ave_motor_speed[0] = moveave_1.add(Now_motor_speed[0]);
+>   // Ave_motor_speed[1] = moveave_2.add(Now_motor_speed[1]);
+>   // Ave_motor_speed[2] = moveave_3.add(Now_motor_speed[2]);
+>   // Ave_motor_speed[3] = moveave_4.add(Now_motor_speed[3]);
+>   
+>   for(int i = 0; i < 4; i++){
+>     Ave_motor_speed[i] = Now_motor_speed[i];
+>   }
+58c62
+<     use_val = (abs(cam_angle) * 0.04) + 2.5;
+---
+>     use_val = (abs(cam_angle) * 0.04) + 1.2;
+62c66
+<       Ave_motor_speed[1] += DIR * use_val+0.5;
+---
+>       Ave_motor_speed[1] += DIR * use_val+0.5; 
+79,82c83,86
+<   for(int i = 0; i < 4; i++){
+<     if(Ave_motor_speed[i] > 230) Ave_motor_speed[i] = 230;
+<     if(Ave_motor_speed[i] < -230) Ave_motor_speed[i] = -230;
+<   }
+---
+>   // for(int i = 0; i < 4; i++){
+>   //   if(Ave_motor_speed[i] > 230) Ave_motor_speed[i] = 230;
+>   //   if(Ave_motor_speed[i] < -230) Ave_motor_speed[i] = -230;
+>   // }
+diff -r -x .pio -x .git -x .vscode -x .DS_Store ../AIR_MAIN_DCX/src/main.cpp ./src/main.cpp
+12d11
+< #include <ESCControl.h>
+25,26c24
+< const int escPin = 3;
+< ESCControl esc(escPin);
+---
+> 
+28a27
+> 
+32c31
+< int motor_pin = 2;
+---
+> const int motor_pin = 2;
+70c69
+<   pinMode(6, OUTPUT);
+---
+>   pinMode(motor_pin, OUTPUT);
+78,79c77
+<   esc.begin();
+<     // while (!Serial) {
+---
+>   // while (!Serial) {
+82c80
+< 
+---
+>   
+97d94
+<   float B_angle = ball.getAngle();
+99c96
+<   // Serial.println(B_angle);
+---
+> 
+113d109
+<   // kick_request = 1;
+117c113
+<   selected_role = 3;
+---
+>   // selected_role = 3;
+121,129d116
+<     esc.update();
+<     if (esc.isReady()) {
+<       if(270 < B_angle || B_angle < 90){
+<         esc.setPulseUs(1400);
+<       }
+<       else{
+<         esc.setPulseUs(1500);
+<       }
+<     }
+135c122
+<   robot_start = 0;
+---
+> 
+147d133
+<   // Serial.println(analogRead(A8));
