@@ -18,7 +18,7 @@ The repository includes **custom PCB designs, multi-MCU embedded firmware, and 3
 ---
 
 <p align="center">
-  <img src="Photos/IMG_2563.heic" width="48%">
+  <img src="Photos/IMG_2563.jpg" width="48%">
   <img src="Photos/IMG_3218 2.jpg" width="48%">
 </p>
 
