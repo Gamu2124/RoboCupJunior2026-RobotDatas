@@ -23,7 +23,7 @@ The repository includes **custom PCB designs, multi-MCU embedded firmware, and 3
 </p>
 
 <p align="center">
-  <b>Japan Open 2026</b>　　　　                 　　　　　<b>World Championship 2026</b>
+           <b>Japan Open 2026</b>　　　　                                          　　　　　<b>World Championship 2026</b>
 </p>
 
 ---
