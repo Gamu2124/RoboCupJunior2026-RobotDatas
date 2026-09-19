@@ -5,7 +5,6 @@ RoboCupJunior Soccer Lightweight 2026 シーズンにおいて、**ジャパン�
 This repository contains the **design, hardware, and software data of AIR**, the **RoboCupJunior Soccer Lightweight 2026 Japan Open Champion and World Championship Champion**.
 
 ---
-
 # 概要 / Overview
 
 本リポジトリは、**次世代のRCJコミュニティおよび学生ロボティクスエンジニアへの情報共有**を目的として公開されています。
@@ -15,6 +14,17 @@ This repository contains the **design, hardware, and software data of AIR**, the
 We open-source **AIR's robot design and development data** to support the global RCJ community and future student roboticists.
 
 The repository includes **custom PCB designs, multi-MCU embedded firmware, and 3D CAD models** used in the development of AIR during the 2026 season.
+
+---
+
+<p align="center">
+  <img src="Photos/IMG_2563.heic" width="48%">
+  <img src="Photos/IMG_3218 2.jpg" width="48%">
+</p>
+
+<p align="center">
+  <b>Japan Open 2026</b>　　　　　　　　　<b>World Championship 2026</b>
+</p>
 
 ---
 
