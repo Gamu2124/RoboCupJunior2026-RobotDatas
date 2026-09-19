@@ -20,12 +20,12 @@ The repository includes **custom PCB designs, multi-MCU embedded firmware, and 3
 <table align="center">
   <tr>
     <td align="center">
-      <img src="Photos/IMG_3218.jpg" width="450">
+      <img src="Photos/IMG_3218.jpg" width="500">
       <br>
       <b>Japan Open 2026</b>
     </td>
     <td align="center">
-      <img src="Photos/IMG_2563.jpg" width="450">
+      <img src="Photos/IMG_2563.jpg" width="500">
       <br>
       <b>World Championship 2026</b>
     </td>
